@@ -219,6 +219,28 @@ func (ws *windowsService) Install() error {
 		return err
 	}
 	defer s.Close()
+
+	err = s.SetRecoveryActions(
+		[]mgr.RecoveryAction{
+			mgr.RecoveryAction{
+				Type:  mgr.ServiceRestart,
+				Delay: 1 * time.Second,
+			},
+			mgr.RecoveryAction{
+				Type:  mgr.ServiceRestart,
+				Delay: 2 * time.Second,
+			},
+			mgr.RecoveryAction{
+				Type:  mgr.ServiceRestart,
+				Delay: 5 * time.Second,
+			},
+		},
+		0,
+	)
+	if err != nil {
+		fmt.Println("Set Recovery Actions Error:", err)
+	}
+
 	err = eventlog.InstallAsEventCreate(ws.Name, eventlog.Error|eventlog.Warning|eventlog.Info)
 	if err != nil {
 		if !strings.Contains(err.Error(), "exists") {
