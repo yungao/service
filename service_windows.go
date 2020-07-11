@@ -235,7 +235,7 @@ func (ws *windowsService) Install() error {
 				Delay: 5 * time.Second,
 			},
 		},
-		0,
+		60,
 	)
 	if err != nil {
 		fmt.Println("Set Recovery Actions Error:", err)
